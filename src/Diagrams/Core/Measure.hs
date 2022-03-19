@@ -39,8 +39,15 @@ import           Linear.Vector
 --   For attributes, the 'local' scale gets multiplied by the average
 --   scale of the transform.
 newtype Measured n a = Measured { unmeasure :: (n,n,n) -> a }
-  deriving (Typeable, Functor, Applicative, Monad, Additive, R.MonadReader (n,n,n))
+  deriving (Typeable, Functor, Applicative, Monad, R.MonadReader (n,n,n))
 -- (local, global, normalized) -> output
+--
+instance forall n. Additive (Measured n) where
+  zero = zero
+  liftU2 f (Measured b) (Measured d) = Measured (liftU2 f b d)
+  liftI2 f (Measured b) (Measured d) = Measured (liftI2 f b d)
+  Measured b ^+^ Measured d = Measured $ b ^+^ d
+  Measured b ^-^ Measured d = Measured $ b ^-^ d
 
 type instance V (Measured n a) = V a
 type instance N (Measured n a) = N a

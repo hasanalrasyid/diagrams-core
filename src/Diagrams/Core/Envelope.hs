@@ -110,6 +110,7 @@ import           Linear.Vector
 --   Sebastian Setzer; see
 --   <http://byorgey.wordpress.com/2009/10/28/collecting-attributes/#comment-2030>.  See also Brent Yorgey, /Monoids: Theme and Variations/, published in the 2012 Haskell Symposium: <http://ozark.hendrix.edu/~yorgey/pub/monoid-pearl.pdf>; video: <http://www.youtube.com/watch?v=X-8NCkD2vOw>.
 newtype Envelope v n = Envelope (Maybe (v n -> Max n))
+  deriving (Semigroup)
 
 instance Wrapped (Envelope v n) where
   type Unwrapped (Envelope v n) = Maybe (v n -> Max n)
@@ -142,7 +143,7 @@ pointEnvelope p = moveTo p (mkEnvelope $ const 0)
 --   Hence, if @e1@ is the envelope for diagram @d1@, and
 --   @e2@ is the envelope for @d2@, then @e1 \`mappend\` e2@
 --   is the envelope for @d1 \`atop\` d2@.
-deriving instance Ord n => Semigroup (Envelope v n)
+-- deriving instance Ord n => Semigroup (Envelope v n)
 
 -- | The special empty envelope is the identity for the
 --   'Monoid' instance.
