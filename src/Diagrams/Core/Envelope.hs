@@ -110,7 +110,9 @@ import           Linear.Vector
 --   Sebastian Setzer; see
 --   <http://byorgey.wordpress.com/2009/10/28/collecting-attributes/#comment-2030>.  See also Brent Yorgey, /Monoids: Theme and Variations/, published in the 2012 Haskell Symposium: <http://ozark.hendrix.edu/~yorgey/pub/monoid-pearl.pdf>; video: <http://www.youtube.com/watch?v=X-8NCkD2vOw>.
 newtype Envelope v n = Envelope (Maybe (v n -> Max n))
-  deriving (Semigroup)
+
+instance Ord n => Semigroup (Envelope v n) where
+  (Envelope a) <> (Envelope b) = Envelope (a <> b)
 
 instance Wrapped (Envelope v n) where
   type Unwrapped (Envelope v n) = Maybe (v n -> Max n)
